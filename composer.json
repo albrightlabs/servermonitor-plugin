@@ -1,0 +1,8 @@
+{
+    "name": "albrightlabs/servermonitor-plugin",
+    "type": "october-plugin",
+    "description": "Provides the ability to monitor multiple online resources.",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}

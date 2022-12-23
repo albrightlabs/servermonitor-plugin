@@ -1,0 +1,21 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: ID
+        disabled: true
+        width: 1%
+    title:
+        label: Title
+        width: 30%
+        cssClass: text-bold
+    endpoint:
+        label: Endpoint
+        width: 49%
+    status:
+        label: Status
+        type: partial
+        path: column_status
+        width: 20%

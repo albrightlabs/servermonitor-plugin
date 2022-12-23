@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Server
+
+# Model Form Field configuration
+form: $/albrightlabs/servermonitor/models/server/fields.yaml
+
+# Model Class name
+modelClass: Albrightlabs\ServerMonitor\Models\Server
+
+# Default redirect location
+defaultRedirect: albrightlabs/servermonitor/servers
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: albrightlabs/servermonitor/servers/update/:id
+    redirectClose: albrightlabs/servermonitor/servers
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: albrightlabs/servermonitor/servers
+    redirectClose: albrightlabs/servermonitor/servers
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

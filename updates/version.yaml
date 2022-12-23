@@ -1,0 +1,6 @@
+1.0.1:
+    - First version of Server Monitor
+1.0.2:
+    - Second version of Server Monitor
+    - Create the servers table
+    - create_servers_table.php
