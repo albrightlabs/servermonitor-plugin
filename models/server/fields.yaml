@@ -9,3 +9,16 @@ fields:
     endpoint:
         label: Endpoint
         span: full
+    status:
+        label: Status
+        span: full
+        type: partial
+        path: field_status
+        context:
+            - preview
+    updated_at:
+        label: Last checked
+        type: datepicker
+        format: n/j/Y g:ia
+        context:
+            - preview
