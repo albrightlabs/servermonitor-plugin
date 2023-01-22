@@ -52,7 +52,7 @@ class Plugin extends PluginBase
     public function registerPermissions()
     {
         return [
-            'albrightlabs.servermonitor.some_permission' => [
+            'albrightlabs.servermonitor.manage_endpoints' => [
                 'tab' => 'Server Monitor',
                 'label' => 'View and manage server monitor endpoints.'
             ],
@@ -92,7 +92,12 @@ class Plugin extends PluginBase
             if($servers = Server::all()){
                 foreach($servers as $server){
                     if(null != $server->endpoint){
-                        \Albrightlabs\ServerMonitor\Plugin::pingDomain($server->id);
+                        if($status = \Albrightlabs\ServerMonitor\Plugin::pingDomain($server->id)){
+
+                            // save status
+                            $server->status = $status;
+                            $server->save();
+                        }
                     }
                 }
             }
@@ -109,19 +114,22 @@ class Plugin extends PluginBase
     public static function pingDomain($server){
         if($server = Server::find($server)){
             $domain = $server->endpoint;
+            $domain = str_replace('https://', 'http://', $domain);
 
-            $starttime = microtime(true);
-            $file = fsockopen($domain, 80, $errno, $errstr, 10);
-            $stoptime = microtime(true);
-            $status = 0;
+            $ch = curl_init($domain);
+            curl_setopt($ch, CURLOPT_NOBODY, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_exec($ch);
+            $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
 
-            if (!$file) $status = -1;  // Site is down
-            else {
-                fclose($file);
-                $status = ($stoptime - $starttime) * 1000;
-                $status = floor($status);
+            if (!$retcode) {
+                return -1;
             }
-            return $status;
+            else {
+                return $retcode;
+            }
+
         }
 
         return -1;

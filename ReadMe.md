@@ -20,6 +20,8 @@ Run either of the following commands:
 
 ## 🚨 Are there any requirements for this plugin?
 Install the plugin, then go to Settings > Server Monitor and begin adding servers to start monitoring.
+Ensure you have October CMS task scheduling set up and working.
 
 ## ✨ Future plans
-* None at this time but please send suggestions to support@albrightlabs.com.
+* Integrate with DevNotify plugin to notify developer(s) if a server status is bad.
+* Please send suggestions to support@albrightlabs.com.

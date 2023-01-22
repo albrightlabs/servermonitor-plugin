@@ -19,3 +19,7 @@ columns:
         type: partial
         path: column_status
         width: 20%
+    updated_at:
+        label: Last checked
+        type: date
+        format: n/j/Y g:ia

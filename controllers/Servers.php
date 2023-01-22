@@ -34,4 +34,23 @@ class Servers extends Controller
         BackendMenu::setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Albrightlabs.ServerMonitor', 'settings');
     }
+
+    /**
+     * Inject row class based on record status.
+     *
+     * @param $lesson
+     * @param $definition
+     * @return string|void
+     */
+    public function listInjectRowClass($server, $definition = null)
+    {
+        // red for bad
+        if (in_array($server->status, [500, 404])) {
+            return 'negative';
+        }
+        // green for good
+        elseif ($server->status == 200) {
+            return 'positive';
+        }
+    }
 }
