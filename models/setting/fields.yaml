@@ -1,0 +1,15 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    _hint:
+        label: ''
+        type: partial
+        path: $/albrightlabs/servermonitor/models/setting/_hint.htm
+    is_throw_error:
+        label: Log info-level error if endpoint status is not 500
+        comment: Can be used with the Dev Notify plugin to trigger an email or SMS notification if sending threshold is set to "info"
+        type: checkbox
+        span: full
+

@@ -32,7 +32,7 @@ class Servers extends Controller
         parent::__construct();
 
         BackendMenu::setContext('October.System', 'system', 'settings');
-        SettingsManager::setContext('Albrightlabs.ServerMonitor', 'settings');
+        SettingsManager::setContext('Albrightlabs.ServerMonitor', 'servers');
     }
 
     /**

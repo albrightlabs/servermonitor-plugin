@@ -1,6 +1,8 @@
 <?php namespace Albrightlabs\ServerMonitor;
 
+use Log;
 use Backend;
+use Albrightlabs\ServerMonitor\Models\Setting;
 use Albrightlabs\ServerMonitor\Models\Server;
 use System\Classes\PluginBase;
 
@@ -56,6 +58,10 @@ class Plugin extends PluginBase
                 'tab' => 'Server Monitor',
                 'label' => 'View and manage server monitor endpoints.'
             ],
+            'albrightlabs.servermonitor.manage_settings' => [
+                'tab' => 'Server Monitor',
+                'label' => 'View and manage server monitor settings.'
+            ],
         ];
     }
 
@@ -67,14 +73,24 @@ class Plugin extends PluginBase
     public function registerSettings()
     {
         return [
-            'settings' => [
-                'label'       => 'Server Monitor',
-                'description' => 'Manage server monitor endpoints.',
+            'servers' => [
+                'label'       => 'Server Management',
+                'description' => 'Manage endpoints to monitor.',
                 'category'    => 'Server Monitor',
-                'icon'        => 'icon-eye',
+                'icon'        => 'icon-server',
                 'url'         => Backend::url('albrightlabs/servermonitor/servers'),
                 'order'       => 500,
-                'keywords'    => 'auto migrate database',
+                'keywords'    => 'server monitor endpoints',
+                'permissions' => ['albrightlabs.automigrate.manage_endpoints'],
+            ],
+            'settings' => [
+                'label'       => 'Monitor Settings',
+                'description' => 'Manage server monitor settings.',
+                'category'    => 'Server Monitor',
+                'icon'        => 'icon-gear',
+                'class'       => \Albrightlabs\ServerMonitor\Models\Setting::class,
+                'order'       => 510,
+                'keywords'    => 'server monitor settings preferences',
                 'permissions' => ['albrightlabs.automigrate.manage_settings'],
             ]
         ];
@@ -96,7 +112,16 @@ class Plugin extends PluginBase
 
                             // save status
                             $server->status = $status;
+                            $server->updated_at = date('Y-m-d H:i:s');
                             $server->save();
+
+                            // log info if status is not 200 and enabled
+                            if($status != 200){
+                                if(Setting::get('is_throw_error', 0)){
+                                    Log::info('[Server Monitor] '.$server->title.' status is '.$server->status);
+                                }
+                            }
+
                         }
                     }
                 }
@@ -114,7 +139,6 @@ class Plugin extends PluginBase
     public static function pingDomain($server){
         if($server = Server::find($server)){
             $domain = $server->endpoint;
-            $domain = str_replace('https://', 'http://', $domain);
 
             $ch = curl_init($domain);
             curl_setopt($ch, CURLOPT_NOBODY, true);
@@ -124,7 +148,7 @@ class Plugin extends PluginBase
             curl_close($ch);
 
             if (!$retcode) {
-                return -1;
+                return 500;
             }
             else {
                 return $retcode;
@@ -132,6 +156,6 @@ class Plugin extends PluginBase
 
         }
 
-        return -1;
+        return 500;
     }
 }

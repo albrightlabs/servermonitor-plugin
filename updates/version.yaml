@@ -4,3 +4,6 @@
     - Second version of Server Monitor
     - Create the servers table
     - create_servers_table.php
+1.0.3:
+    - Third version of Server Monitor
+    - Fixes bugs and adds notification features
